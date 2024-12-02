@@ -8,8 +8,6 @@ use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
-    //
-
     public function index(){
 
         $user = auth()->user();
@@ -19,7 +17,5 @@ class DashboardController extends Controller
         $mhs = Mahasiswa::where('email', $email)->first();
 
         return response()->json(['data' => $mhs]);
-
-
     }
 }

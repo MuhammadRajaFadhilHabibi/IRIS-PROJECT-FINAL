@@ -4,8 +4,6 @@
 
 @section('page')
 
-<x-navbar></x-navbar>
-
 <div class="flex pt-12 bg-white-50 min-h-screen">
     {{-- Sidebar --}}
     <x-side-bar :active="request()->route()->getName()"></x-side-bar>
@@ -14,7 +12,9 @@
     {{-- Main Content --}}
     <div id="main-content" class="relative text-gray-900 font-poppins w-full h-full pl-[20%] pt-10">
         <div class="px-10">
-            <h1 class="text-2xl font-bold text-blue-700 mb-6">Ajuan IRS</h1>
+          <h1 class="text-transparent bg-clip-text bg-gradient-to-b from-blue-500 to-blue-300 font-bold text-3xl mb-4">
+            Ajuan IRS Mahasiswa
+        </h1>
             <div class="p-6 bg-white shadow-md rounded-lg border border-blue-300">
                 <div class="overflow-x-auto">
                     <table id="ajuan-irs" class="min-w-full border-collapse border border-blue-300 text-center">
@@ -91,13 +91,13 @@
         <script>
             function approveIrs(nama, email) {
               Swal.fire({
-                title: "Are you sure to approve the schedule for " + nama + "?",
-                text: "You won't be able to revert this!",
+                title: "Apakah yakin untuk menyetujui IRS " + nama + "?",
+                text: "Perubahan tidak dapat dikembalikan!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, approve it!"
+                confirmButtonText: "Yes!"
               }).then((result) => {
                 if (result.isConfirmed) {
                   $.ajax({
@@ -109,8 +109,8 @@
                     },
                     success: function(response) {
                       Swal.fire({
-                        title: "Approved!",
-                        text: "IRS approved for " + nama,
+                        title: "Ditetujui",
+                        text: "IRS telah disetujui untuk " + nama,
                         icon: "success"
                       }).then(() => {
                         location.reload();
@@ -125,13 +125,13 @@
         <script>
             function rejectIrs(nama, email) {
                 Swal.fire({
-                title: "Are you sure to reject the schedule for " + nama + "?",
-                text: "You won't be able to revert this!",
+                title: "Apakah yakin menolak IRS untuk " + nama + "?",
+                text: "Perubahan tidak dapat dikembalikan!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, reject it!"
+                confirmButtonText: "Yes!"
               }).then((result) => {
                 if (result.isConfirmed) {
                   $.ajax({
@@ -143,8 +143,8 @@
                     },
                     success: function(response) {
                       Swal.fire({
-                        title: "Rejected!",
-                        text: "IRS rejected for " + nama,
+                        title: "Ditolak!",
+                        text: "IRS telah ditolak untuk " + nama,
                         icon: "error"
                       }).then(() => {
                         location.reload();

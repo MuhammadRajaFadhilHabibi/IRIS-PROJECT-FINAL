@@ -44,7 +44,10 @@
                     <p class="text-sm">NIM: <span class="font-semibold">{{ $data['nim'] }}</span></p>
                     <p class="text-sm">Prodi: <span class="font-semibold">S1 {{ $data['prodi'] }}</span></p>
                 </div>
-                <div class="absolute right-6 -top-8 w-24 h-24 bg-black rounded-full border-4 border-gray-300"></div>
+                <div class="absolute right-6 -top-8 w-40 h-40 bg-black rounded-full border-4 border-gray-300 overflow-hidden">
+                    <img src="alip.jpg" alt="Profile Picture" class="w-full h-full object-cover">
+                </div>
+                
             </div>
 
             <!-- Academic Status and Performance Section -->
@@ -55,7 +58,7 @@
                         <span class="material-icons text-gray-600 mr-2">school</span>
                         Status Akademik
                     </h3>
-                    <p class="text-sm text-gray-700 mb-2">Dosen Wali: Dr. Sutikno, S.T., M.Cs.<br><span class="text-xs">(NIP: 197905242009121003)</span></p>
+                    <p class="text-sm text-gray-700 mb-2">Dosen Wali: Dr. Robert Downey JR, S.T., M.Cs.<br><span class="text-xs">(NIP: 2031023012031)</span></p>
                     <div class="flex justify-between mt-4">
                         <div class="text-center">
                             <p class="text-xs text-gray-500">Semester Akademik</p>
@@ -73,7 +76,7 @@
                 </div>
 
                 <!-- Academic Performance -->
-                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-teal-500">
+                <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
                     <h3 class="font-semibold text-lg mb-4 flex items-center text-gray-800">
                         <span class="material-icons text-gray-600 mr-2">emoji_events</span>
                         Prestasi Akademik

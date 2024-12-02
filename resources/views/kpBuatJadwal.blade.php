@@ -144,6 +144,29 @@
   
             </div>
         </div>
+        <script>
+            // Event listener untuk tombol Setujui dan Tolak
+            document.querySelectorAll('.setujui-btn, .tolak-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');  // Menemukan baris (tr) tempat tombol berada
+        
+                    // Menghapus tombol-tombol yang ada
+                    row.querySelector('.setujui-btn').style.display = 'none';
+                    row.querySelector('.tolak-btn').style.display = 'none';
+                    row.querySelector('.detail-btn').style.display = 'none';
+        
+                    // Menambahkan status "Disetujui" atau "Ditolak"
+                    const statusText = this.classList.contains('setujui-btn') ? 'Disetujui' : 'Ditolak';
+                    const statusElement = document.createElement('span');
+                    statusElement.textContent = statusText;
+                    statusElement.classList.add('bg-green-100', 'text-green-800', 'px-3', 'py-1', 'rounded-full');
+                    
+                    // Menambahkan status ke dalam baris
+                    row.querySelector('td:last-child').appendChild(statusElement);  // Menambahkan ke kolom terakhir (misalnya status)
+                });
+            });
+        </script>
+        
 
 
         <script>
@@ -244,7 +267,7 @@ function checkInputsFilled(id) {
                         if (response.bool === true) {
                             //disable button
                             $(`#updateModal-${id} button[type='submit']`).attr('disabled', true);
-                            $(`#alerta-${id}`).html(`<div class="flex items-center p-4 mb-4 text-xs text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800" role="alert">
+                            $(`#alerta-${id}`).html(`<div class="flex items-center p-4 mb-4 text-xs text-red-800 border border-red-300 rounded-lg bg-white-50 bg-white dark:text-red-400 dark:border-red-800" role="alert">
   <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
   </svg>
@@ -257,13 +280,13 @@ function checkInputsFilled(id) {
                             // alert(`Jadwal sudah terpakai oleh ${data[0].matakuliah} ${data[0].kelas}`);
                         }else{
                             $(`#updateModal-${id} button[type='submit']`).attr('disabled', false);
-                            $(`#alerta-${id}`).html(`<div class="flex items-center p-4 mb-4 text-xs text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800" role="alert">
+                            $(`#alerta-${id}`).html(`<div class="flex items-center p-4 mb-4 text-xs text-green-800 border border-green-300 rounded-lg bg-green-50 bg-white dark:text-green-400 dark:border-green-800" role="alert">
   <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
     <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
   </svg>
   <span class="sr-only">Info</span>
   <div>
-    <span class="font-medium">Jadwal Aman!</span> Jadwal tidak tabrakan dengan jadwal manapun
+    <span class="font-medium"></span> Jadwal tidak tabrakan dengan jadwal manapun
   </div>
 </div>`);
 

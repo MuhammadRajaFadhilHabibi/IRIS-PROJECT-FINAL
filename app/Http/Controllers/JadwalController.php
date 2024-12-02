@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Models\User;
 use App\Models\Ruang;
 use App\Models\Jadwal;
@@ -9,17 +7,12 @@ use App\Models\Matakuliah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-
 class JadwalController extends Controller
 {
-    //
-
     public function index()
     {
         $user = auth()->user();
         $data = Jadwal::where('prodi', $user->prodi)->get(); 
-
-        //from kodemk get the name of the matakuliah
         
         $jamend = [
             "" => '',
@@ -70,7 +63,6 @@ class JadwalController extends Controller
             $d->jamselesai = $jamend[$d->jamselesai];
             $d->hari = $day[$d->hari];
         }
-        //and prodi = Informatika
         $data->belumcount = $data->where('status', 'Belum Dibuat')->count();
         $dataruang = Ruang::where('status', 'Disetujui')->where('prodi', $user->prodi)->get();
         return view('kpBuatJadwal', compact('data', 'dataruang', 'jamend'));
@@ -78,13 +70,10 @@ class JadwalController extends Controller
 
     public function index2()
     {
-         // Get the authenticated user
         $user = auth()->user();
         $data = Jadwal::where('status', 'Disetujui')
                 ->where('prodi', $user->prodi)
                 ->get();
-
-        //from kodemk get the name of the matakuliah
         
         $jamend = [
             "" => '',
@@ -136,8 +125,7 @@ class JadwalController extends Controller
             $d->hari = $day[$d->hari];
             $d->belumDibuatCount = $data->where('status', 'Belum Dibuat')->count();
         }
-        //and prodi = Informatika
-        return view('kpReviewJadwal', compact('data'));
+        return view('kpDetailJadwal', compact('data'));
     }
 
     public function index3()
@@ -147,7 +135,6 @@ class JadwalController extends Controller
         ->groupBy('prodi')
         ->get();
             
-        // Add a flag to check if all jadwal for the program studi are 'Pending'
         foreach ($data as $jadwal) {
         $jadwal->all_pending = Jadwal::where('prodi', $jadwal->prodi)
             ->where('status', '=', 'Belum Dibuat')
@@ -155,15 +142,11 @@ class JadwalController extends Controller
         $jadwal->belumcount = Jadwal::where('prodi', $jadwal->prodi)->where('status', 'Belum Dibuat')->count();
         }
 
-        
         return view('dkAjuanJadwal', compact('data'));
     }
 
     public function isJadwalExist(Request $request)
     {
-
-        // return response()->json(request()->all());
-        
         if(request()->ajax()){
             $hari = request()->hari;
             $jammulai = request()->jammulai;
@@ -171,7 +154,6 @@ class JadwalController extends Controller
             $ruang = request()->ruang;
         }
 
-        
         $data = Jadwal::where('hari', $hari)
                 ->where('ruang', $ruang)
                 ->where(function($query) use ($jammulai, $jamselesai) {
@@ -190,9 +172,6 @@ class JadwalController extends Controller
             $d->sks = Matakuliah::where('kodemk', $d->kodemk)->first()->sks;
         }
 
-
-                
-
         if($data->count() > 0){
             return response()->json(['bool'=>true, 'data'=>$data]);
         }else{
@@ -202,8 +181,6 @@ class JadwalController extends Controller
 
     public function update(Request $request, $id)
     {
-
-        // dd($request->all());
         $request -> validate([
             'hari' => 'required',
             'jammulai' => 'required',
@@ -233,7 +210,6 @@ class JadwalController extends Controller
             'prodi' => 'required'
         ]);
 
-        // Update all 'pending' Jadwal entries for the selected prodi to 'Disetujui'
         Jadwal::where('prodi', $request->prodi)
             ->where('status', 'Pending')
             ->update(['status' => 'Disetujui']);
@@ -247,7 +223,6 @@ class JadwalController extends Controller
             'prodi' => 'required'
         ]);
 
-        // Update all 'pending' Jadwal entries for the selected prodi to 'Ditolak'
         Jadwal::where('prodi', $request->prodi)
             ->where('status', 'Pending')
             ->update(['status' => 'Ditolak']);
@@ -257,8 +232,6 @@ class JadwalController extends Controller
 
     public function reviewJadwalProdi($prodi)
     {
-
-
        $data = Jadwal::where('prodi', $prodi)->get();
 
        $data->prodi = $prodi;
@@ -305,15 +278,24 @@ class JadwalController extends Controller
            5 => 'Jumat',
        ];
        
-       foreach($data as $d){
-           $d->matakuliah = Matakuliah::where('kodemk', $d->kodemk)->first()->nama;
-           $d->sks = Matakuliah::where('kodemk', $d->kodemk)->first()->sks;
-           $d->jammulai = $jamstart[$d->jammulai];
-           $d->jamselesai = $jamend[$d->jamselesai];
-           $d->hari = $day[$d->hari];
-       }
-       //and prodi = Informatika
-       return view('kpReviewJadwal', compact('data'));
+       foreach($data as $d) {
+        $matakuliah = Matakuliah::where('kodemk', $d->kodemk)->first(); 
+        if ($matakuliah) {
+            $d->matakuliah = $matakuliah->nama;
+            $d->sks = $matakuliah->sks;
+            $d->plotsemester = $matakuliah->plotsemester; 
+        } else {
+            $d->matakuliah = null;
+            $d->sks = null;
+            $d->plotsemester = null;
+        }
+    
+        $d->jammulai = $jamstart[$d->jammulai] ?? null;
+        $d->jamselesai = $jamend[$d->jamselesai] ?? null; 
+        $d->hari = $day[$d->hari] ?? null; 
+        $d->belumDibuatCount = $data->where('status', 'Belum Dibuat')->count();
+    }
+    
+       return view('kpDetailJadwal', compact('data'));
    }
-
 }

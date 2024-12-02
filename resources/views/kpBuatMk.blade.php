@@ -14,7 +14,9 @@
     <div id="main-content" class="flex-1 p-8 bg-gray-200 min-h-screen ml-[340px]">
         <div class="flex flex-col items-start space-y-8">
             <!-- Header Buat Mata Kuliah -->
-            <h1 class="text-3xl font-bold text-blue-600 mb-4">Buat Mata Kuliah</h1>
+            <h1 class="text-transparent bg-clip-text bg-gradient-to-b from-blue-500 to-blue-300 font-bold text-3xl mb-4">
+                Buat Mata Kuliah
+            </h1>
 
             <!-- Kontainer Form dan Tabel -->
             <div class="w-full max-w-[90%] bg-white p-6 rounded-2xl shadow-md border border-gray-300">

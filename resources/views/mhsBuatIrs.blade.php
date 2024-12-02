@@ -4,18 +4,14 @@
 
 @section('page')
 
-  {{-- navbar --}}
-    <x-navbar></x-navbar>
-  {{-- endnavbar --}}
-
-    <div class="flex pt-12 overflow-hidde">
+  <div class="flex pt-12 overflow-hidden bg-white">
 
       {{-- sidebar --}}
         <x-side-bar :active="request()->route()->getName()">
         </x-side-bar>
       {{-- end sidebar --}}
 
-<div id="main-content" class="relative w-full h-full font-poppins overflow-y-auto lg:ml-[21rem] px-10 bg-gray-50">
+      <div id="main-content" class="relative w-full h-full font-poppins overflow-y-auto lg:ml-[22rem] bg-white">
 
 
         {{-- place this button to right full --}}
@@ -39,7 +35,7 @@
             </button>
         </div>
         
-        <div class="flex justify-between items-center mx-14 my-8">
+        <div class="flex justify-between items-center mx-14 my-8 bg-white">
             <h1 class="text-3xl font-semibold text-gray-900">Buat IRS</h1>
             <div class="flex items-center justify-right">
           </div>
@@ -50,7 +46,7 @@
            <h5 id="drawer-right-label" class="inline-flex items-center mb-4 text-base font-semibold text-gray-500">
            </h5>
            <h1 class="text-lg font-semibold text-black text-center">Daftar IRS</h1>
-          <button type="button" data-drawer-hide="drawer-right-example" aria-controls="drawer-right-example" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center" >
+          <button type="button" data-drawer-hide="drawer-right-example" aria-controls="drawer-right-example" class="text-gray-400 bg-transparent hover:bg-white hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 inline-flex items-center justify-center" >
              <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
              </svg>
@@ -74,7 +70,7 @@
         </div>
 
         <div> <!-- Add enough padding to account for the height of the fixed header -->
-            <div class="relative mx-14 overflow-x-auto shadow-md sm:rounded-lg">
+            <div class="relative mx-14 overflow-x-auto shadow-md sm:rounded-lg bg-white">
                 @php
                     $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
                     $times = ['07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
@@ -83,9 +79,9 @@
 <table class="w-full text-sm text-left border-collapse">
     <thead>
         <tr class="text-center text-white">
-            <th class="p-4 bg-blue-900">#</th>
+            <th class="p-4 w-[8%] bg-blue-900">Jam</th>
             @foreach($days as $dayIndex => $day)
-                <th class="py-4" style="background-color: {{ ['#0077b6', '#0096c7', '#00b4d8', '#48cae4', '#90e0ef'][$dayIndex] }};">
+                <th class="p-4 w-[18.4%]" style="background-color: {{ ['#0077b6', '#0096c7', '#00b4d8', '#48cae4', '#90e0ef'][$dayIndex] }};">
                     {{ $day }}
                 </th>
             @endforeach
@@ -94,9 +90,9 @@
     <tbody>
         @foreach($times as $timeIndex => $time)
             <tr>
-                <td class="px-4 py-3 text-center font-medium text-gray-700 bg-blue-50">{{ $time }}</td>
+                <td class="px-4 py-3 text-center font-medium text-gray-700 bg-blue-50 w-[8%]">{{ $time }}</td>
                 @foreach($days as $dayIndex => $day)
-                    <td class="px-4 py-3" style="background-color: {{ $dayIndex % 2 === 0 ? '#caf0f8' : '#ade8f4' }};">
+                    <td class="p-3 w-[18.4%]" style="background-color: {{ $dayIndex % 2 === 0 ? '#caf0f8' : '#ade8f4' }};">
                         @foreach($data as $matkul)
                             @foreach($matkul->kelas as $kelas)
                                 @if($kelas->hari == $day && substr($kelas->jam, 0, 2) == substr($time, 0, 2))
@@ -466,13 +462,5 @@
     }
 }
 
-
-
-
 </script>
-
-
-
-
-
 @endsection

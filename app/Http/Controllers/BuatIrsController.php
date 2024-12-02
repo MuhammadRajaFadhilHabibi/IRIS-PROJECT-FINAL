@@ -21,7 +21,6 @@ class BuatIrsController extends Controller
         $email = $user->email;
         $mhs = Mahasiswa::where('email', $email)->first();
         $data = Jadwal::select('kodemk')->where('prodi', $user->prodi)->groupBy('kodemk')->get();
-        //from kodemk get the name of the matakuliah
         
         $jamend = [
             "" => '',
@@ -78,7 +77,7 @@ class BuatIrsController extends Controller
 
         }
 
-        //count the total sks where email = data[email]
+        //Menghitung Total SKS
         $picked = Irstest::where('email', $email)->get();
         $total = 0;
         foreach($picked as $p){
@@ -86,15 +85,13 @@ class BuatIrsController extends Controller
         }
 
 
-        // dd($data);
-        //and prodi = Informatika
         $dataruang = Ruang::where('status', 'Disetujui')->where('prodi', 'Informatika')->get();
 
         if($mhs->akses_irs=='yes'){
             return view('mhsBuatIrs', compact('data','email','total'));
         }else{
             $aksesirs = $mhs->akses_irs;
-            return view('irsClosed',compact('aksesirs','email'));
+            return view('irsTutup',compact('aksesirs','email'));
         }
     }
 
@@ -104,22 +101,20 @@ class BuatIrsController extends Controller
         $email = auth()->user()->email;
         $dosen = Dosen::where('email', $email)->first();
 
-        // Retrieve the list of students who have pending IRS entries
+        // LIST PENDING IRS MAHASISWA
         $data = Irstest::select('irs_test.email', 'mahasiswa.nim', 'mahasiswa.nama', DB::raw('SUM(mata_kuliah.sks) as total_sks'))
-        ->join('mata_kuliah', 'irs_test.kodemk', '=', 'mata_kuliah.kodemk') // Join with Matakuliah to get SKS
-        ->join('mahasiswa', 'irs_test.email', '=', 'mahasiswa.email')     // Join with Mahasiswa to get NIM and nama
+        ->join('mata_kuliah', 'irs_test.kodemk', '=', 'mata_kuliah.kodemk') 
+        ->join('mahasiswa', 'irs_test.email', '=', 'mahasiswa.email')    
         ->where('irs_test.status', 'Pending')
-        ->where('mahasiswa.nip_doswal', $dosen->nip)                    // Filter by status Pending
-        ->groupBy('irs_test.email', 'mahasiswa.nim', 'mahasiswa.nama')    // Group by email, NIM, and nama
+        ->where('mahasiswa.nip_doswal', $dosen->nip)                    
+        ->groupBy('irs_test.email', 'mahasiswa.nim', 'mahasiswa.nama')    
         ->get();
 
-        // dd($data);
-        // Loop through the result to check if all jadwal for the student are 'Pending'
+        // Loop untuk cek irs pending mahasiswa
         foreach ($data as $irstest) {
-            // Check if the student has any IRS that are not 'Pending'
             $irstest->all_pending = !Irstest::where('email', $irstest->email)
                 ->where('status', '!=', 'Pending')
-                ->exists(); // If no non-pending records exist, all are pending
+                ->exists(); 
 
             $irstest->datairs = Irstest::where('email', $irstest->email)->where('status','Pending')->get();
 
@@ -130,9 +125,6 @@ class BuatIrsController extends Controller
             }
         }
 
-        // dd($data);
-
-        // Pass the data to the view
         return view('paAjuanIrs', compact('data'));
     }
 
@@ -142,11 +134,11 @@ class BuatIrsController extends Controller
         $dosen = Dosen::where('email', $email)->first();
 
         $data = Irstest::select('irs_test.email', 'mahasiswa.nim', 'mahasiswa.nama', DB::raw('SUM(mata_kuliah.sks) as total_sks'))
-        ->join('mata_kuliah', 'irs_test.kodemk', '=', 'mata_kuliah.kodemk') // Join with Matakuliah to get SKS
-        ->join('mahasiswa', 'irs_test.email', '=', 'mahasiswa.email')     // Join with Mahasiswa to get NIM and nama
+        ->join('mata_kuliah', 'irs_test.kodemk', '=', 'mata_kuliah.kodemk') 
+        ->join('mahasiswa', 'irs_test.email', '=', 'mahasiswa.email')     
         ->where('mahasiswa.akses_irs', 'req')
         ->where('mahasiswa.nip_doswal', $dosen->nip)     
-        ->groupBy('irs_test.email', 'mahasiswa.nim', 'mahasiswa.nama')    // Group by email, NIM, and nama
+        ->groupBy('irs_test.email', 'mahasiswa.nim', 'mahasiswa.nama')  
         ->get();
         
 
@@ -171,30 +163,24 @@ class BuatIrsController extends Controller
             'kodemk' => 'required'
         ]);
 
-        //counting prioritas
+        // Mengambil data mahasiswa
         $Mahasiswa = Mahasiswa::where('email', $request->email)->first();
         $smtMahasiswa = $Mahasiswa->semester_berjalan;
+
+        // Mengambil data mata kuliah
         $smtMatakuliah = Matakuliah::where('kodemk', $request->kodemk)->first()->plotsemester;
-        //check is empty query if yes fill with S
-        $nilaiKhs = Khs::where('nim', $Mahasiswa->nim)->where('kode', $request->kodemk)->first() ? Khs::where('nim', $Mahasiswa->nim)->where('kode', $request->kodemk)->first()->nilai : 'S';
-        
-        // return response()->json(['data' => $nilaiKhs]);
 
+        // Menentukan prioritas berdasarkan semester
         if($smtMahasiswa > $smtMatakuliah){
-            if($nilaiKhs == 'D' || $nilaiKhs == 'E'){
-                $prioritas = 3;
-            }else if($nilaiKhs == 'A'|| $nilaiKhs == 'C' || $nilaiKhs == 'B'){
-                $prioritas = 2;
-            }else{
-                $prioritas = 4;
-            }
+        // Jika semester mahasiswa lebih tinggi daripada semester mata kuliah, prioritas lebih tinggi
+        $prioritas = 3;  // Diprioritaskan pertama
         }else if($smtMahasiswa == $smtMatakuliah){
-            $prioritas = 5;
+        // Jika semester mahasiswa sama dengan semester mata kuliah, prioritas berikutnya
+        $prioritas = 2;  // Diprioritaskan setelah yang lebih tinggi
         }else{
-            $prioritas = 1;
-        }
-
-        //end of counting prioritas
+        // Jika semester mahasiswa lebih rendah daripada semester mata kuliah, prioritas terakhir
+        $prioritas = 1;  // Diprioritaskan terakhir
+}
 
         $data = [
             'email' => $request->email,
@@ -205,10 +191,7 @@ class BuatIrsController extends Controller
             'semester' => $Mahasiswa->semester_berjalan
         ];
 
-        // return response()->json(['data' => $data]);
-
-        
-        //check if the email and kodemk already exist in the database
+        //check email dan kodemk di database
         $check = Irstest::where('email', $data['email'])->where('kodemk', $data['kodemk'])->first();
         if($check) {
             $check->update($data);
@@ -217,7 +200,7 @@ class BuatIrsController extends Controller
             Irstest::create($data);
         }
 
-        //sort the irs by created at and prioritas and get the position of the data
+        //pengurutan irs berdasarkan irs prioritas
         $row_index = Irstest::select(DB::raw('ROW_NUMBER() OVER (ORDER BY prioritas DESC,updated_at ASC) AS row_index,email'))
         ->where('kodejadwal', $data['kodejadwal'])
         ->get();
@@ -237,9 +220,7 @@ class BuatIrsController extends Controller
 
         }
 
-
-
-        //count the total sks where email = data[email]
+        //menghitung sks berdasarkan email
         $picked = Irstest::where('email', $data['email'])->get();
         $total = 0;
         foreach($picked as $p){
@@ -249,12 +230,8 @@ class BuatIrsController extends Controller
         $data['sks'] = $total;
         $data['position'] = $position;
         
-
-
-
         return response()->json(['data' => $data, 'position' => $row_index]);   
         
-
     }
 
     public function deleteIrs(Request $request) {
@@ -267,7 +244,6 @@ class BuatIrsController extends Controller
         $kodejadwal = $data->kodejadwal;
         $data->delete();
 
-        //count the total sks where email = data[email]
         $user = auth()->user();
         $email = $user->email;
         $picked = Irstest::where('email', $email)->get();
@@ -275,10 +251,6 @@ class BuatIrsController extends Controller
         foreach($picked as $p){
             $total += Matakuliah::where('kodemk', $p->kodemk)->first()->sks;
         }
-
-
-        
-        
         return response()->json(['kodejadwal' => $kodejadwal,'sks' => $total]);
     }
 
@@ -293,8 +265,6 @@ class BuatIrsController extends Controller
             $d->sks = $matkul ? $matkul->sks : 0;
             $d->kelas = Jadwal::where('id', $d->kodejadwal)->first();
             $d->kapasitas = $d->kelas->kapasitas;
-
-            //check position in priorty queue
             $row_index = Irstest::select(DB::raw('ROW_NUMBER() OVER (ORDER BY prioritas DESC, updated_at ASC) AS row_index,email'))
             ->where('kodejadwal', $d->kodejadwal)
             ->get();
@@ -305,9 +275,7 @@ class BuatIrsController extends Controller
                 }
             }
             $d->position = $position;
-
         }
-    
         return response()->json($data);
     }
 
@@ -317,7 +285,7 @@ class BuatIrsController extends Controller
             'email' => 'required'
         ]);
 
-        // Update all 'pending' Jadwal entries for the selected prodi to 'Disetujui'
+        // Menyetujui irs mahasiswa yang pending
         Irstest::where('email', $request->email)
             ->where('status', 'Pending')
             ->update(['status' => 'Disetujui']);
@@ -334,7 +302,7 @@ class BuatIrsController extends Controller
             'email' => 'required'
         ]);
 
-        // Update all 'pending' Jadwal entries for the selected prodi to 'Disetujui'
+        // Menolak Irs mahasiswa
         Irstest::where('email', $request->email)
             ->where('status', 'Pending')
             ->update(['status' => 'Ditolak']);
@@ -348,7 +316,7 @@ class BuatIrsController extends Controller
             'email' => 'required'
         ]);
 
-        // Update all 'pending' Jadwal entries for the selected prodi to 'Disetujui'
+        // Menyetujui perubahan irs mahasiswa
         Irstest::where('email', $request->email)
             ->where('status', 'Disetujui')
             ->update(['status' => 'Pending']);
@@ -365,6 +333,7 @@ class BuatIrsController extends Controller
             'email' => 'required'
         ]);
 
+        //Menolak perubahan IRS Mahasiswa
         Mahasiswa::where('email', $request->email)
             ->update(['akses_irs' => 'no']);
 
@@ -375,6 +344,7 @@ class BuatIrsController extends Controller
     public function ajuanPerubahan(Request $request)
     {
 
+        //Ajuan perubahan irs mahasiswa ke pembimbing akademik
         $email = $request->email;
 
         $mhs = Mahasiswa::where('email', $email)->first();

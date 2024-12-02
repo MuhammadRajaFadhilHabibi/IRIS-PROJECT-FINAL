@@ -11,12 +11,10 @@ use App\Models\Mahasiswa;
 
 class IrsController extends Controller
 {   
-
-    
     public function all()
     {
         $email = auth()->user()->email;
-        // Join the mahasiswa table to group by semester in matakuliah and sum SKS
+        // Join table mahasiswa dengan semester dan penjumlahan sks
         $data = Irstest::select('semester', DB::raw('sum(sks) as total_sks'))
             ->join('mata_kuliah', 'irs_test.kodemk', '=', 'mata_kuliah.kodemk')
             ->join('mahasiswa', 'irs_test.email', '=', 'mahasiswa.email')
@@ -24,18 +22,12 @@ class IrsController extends Controller
             ->where('irs_test.status', 'Disetujui')
             ->groupBy('semester')
             ->get();
-
-        // dd($data);
-
-
         return view('mhsIrs', compact('data', 'email'));
     }
 
     public function index(Request $request, $semester,$email)
     {
-
-        // Get the specific records for the selected semester from matakuliah
-
+        // Get daftar dari semester di matakuliaj yang dipilih
         $query ="SELECT m.kodemk as kodemk, 
                         m.nama as mata_kuliah, 
                         j.ruang as ruang, 
@@ -47,9 +39,6 @@ class IrsController extends Controller
                 WHERE ma.email = '".$email."'
                 AND i.status = 'Disetujui'  
                 AND i.semester=".$semester."";
-
-        // return response()->json(['data' => $query]);
-
         $data = DB::select($query);
 
         foreach ($data as $key => $value) {

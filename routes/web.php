@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AkademikController;
 use Monolog\Registry;
 use App\Http\Middleware\RegistFirst;
 use Illuminate\Support\Facades\Route;
@@ -13,12 +14,12 @@ use App\Http\Controllers\AjuanRuangController;
 use App\Http\Controllers\MatakuliahController;
 use App\Http\Controllers\BuatIrsController;
 use App\Http\Middleware\Authenticate;
-use App\Http\Middleware\BagAkademikMiddleware;
+use App\Http\Middleware\BagianAkademikMiddleware;
 use App\Http\Middleware\Dekan;
 use App\Http\Middleware\DekanMiddleware;
 use App\Http\Middleware\KaprodiMiddleware;
 use App\Http\Middleware\MahasiswaMiddleware;
-use App\Http\Middleware\PemAkademikMiddleware;
+use App\Http\Middleware\PembimbingAkademikMiddleware;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -48,46 +49,43 @@ Route::middleware('auth')->group(function () {
         
     })->name('dashboard');
     
-    //Mahasiswa
-    Route::middleware(MahasiswaMiddleware::class)->group(function () {
-        
-        
-        //IRS
-        Route::get('/irs',[IrsController::class,'all']) -> name('irs');
-        Route::get('/irs/{id}/{email}',[IrsController::class,'index']);
-        
-        
-        //KHS
-        Route::get('/khs',[KhsController::class,'all']) -> name('khs');
-        Route::get('/khs/{id}',[KhsController::class,'index']);
-        
-        
-        //Transkrip
-        Route::get('m/transkrip', function () {
-            return view('mhsTranskrip');
-        })->name('transkrip');
-        Route::get('m/make-irs', function () {
-            return view('mhsBuatIrs');
-        })->name('transkrip');
-        
-        //Buat IRS
-        Route::get('/buat-irs',[BuatIrsController::class,'index']) -> name('buat-irs')->middleware([RegistFirst::class]);
-        Route::post('/buat-irstest',[BuatIrsController::class,'createIrs']) -> name('buat-irstest');
-        Route::post('/viewirs',[BuatIrsController::class,'viewIrs']) -> name('viewirs');
-        Route::post('/deleteirs',[BuatIrsController::class,'deleteIrs']) -> name('deleteirs');
-        Route::post('/ajuanperubahan', [BuatIrsController::class, 'ajuanPerubahan'])->name('ajukanPerubahanIRS');
-        
-        
-        //Registrasi
-        Route::get('m/registrasi', function () {
-            return view('mhsRegistrasi');
-        })->name('registration');
-        
-        
-    });
+    // Route untuk halaman mhsAkademik
+Route::get('/mhsAkademik', [AkademikController::class, 'index'])->name('mhsAkademik');
+
+// Mahasiswa middleware group
+Route::middleware(MahasiswaMiddleware::class)->group(function () {
+    
+    // IRS Routes
+    Route::get('/irs', [IrsController::class, 'all'])->name('irs');
+    Route::get('/irs/{id}/{email}', [IrsController::class, 'index']);
+    
+    // KHS Routes
+    Route::get('/khs', [KhsController::class, 'all'])->name('khs');
+    Route::get('/khs/{id}', [KhsController::class, 'index']);
+    
+    // Transkrip Routes
+    Route::get('m/transkrip', function () {
+        return view('mhsTranskrip');
+    })->name('transkrip');
+    Route::get('m/make-irs', function () {
+        return view('mhsBuatIrs');
+    })->name('transkrip');
+
+    // Buat IRS Route
+    Route::get('/buat-irs', [BuatIrsController::class, 'index'])->name('mhsBuatIrs')->middleware([RegistFirst::class]);
+    Route::post('/buat-irstest', [BuatIrsController::class, 'createIrs'])->name('buat-irstest');
+    Route::post('/viewirs', [BuatIrsController::class, 'viewIrs'])->name('viewirs');
+    Route::post('/deleteirs', [BuatIrsController::class, 'deleteIrs'])->name('deleteirs');
+    Route::post('/ajuanperubahan', [BuatIrsController::class, 'ajuanPerubahan'])->name('ajukanPerubahanIRS');
+    
+    // Registrasi Routes
+    Route::get('m/registrasi', function () {
+        return view('mhsRegistrasi');
+    })->name('registration');
+});
 
     //Pembimbing Akademik
-    Route::middleware(PemAkademikMiddleware::class)->group(function (){
+    Route::middleware(PembimbingAkademikMiddleware::class)->group(function (){
         
         //IRS
         Route::get('/ajuanIrs', [BuatIrsController::class, 'index2'])->name('ajuanIrs');
@@ -110,7 +108,7 @@ Route::middleware('auth')->group(function () {
     });
     
     //Bagian Akademik
-    Route::middleware(BagAkademikMiddleware::class)->group(function (){
+    Route::middleware(BagianAkademikMiddleware::class)->group(function (){
         
         //Ruang
         Route::resource('/ruang', RuangController::class)->names([
@@ -158,7 +156,7 @@ Route::middleware('auth')->group(function () {
         return view('maintenance');
     });
     Route::get('/irs-closed',function(){
-        return view('irsClosed');
+        return view('irsTutup');
     });
     Route::get('/tes',function(){
         return view('tes');

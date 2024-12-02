@@ -1,12 +1,10 @@
 <?php
-
 namespace App\Http\Middleware;
-
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class PemAkademikMiddleware
+class BagianAkademikMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,11 +13,10 @@ class PemAkademikMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        
-        if(auth()->user()->pa == 1){
+        if(auth()->user()->ba == 1){
             return $next($request);
         }
 
-        return redirect()->back()->with('error','You have not pem akademik access');
+        return redirect()->back()->with('error','You have not bag akademik access');
     }
 }

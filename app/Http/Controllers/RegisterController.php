@@ -1,14 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\User;
 
 class RegisterController extends Controller
 {
-    //
-
     public function index()
     {
         return view('regist');
@@ -29,7 +25,5 @@ class RegisterController extends Controller
         ]);
 
         return view('login');
-
-        
     }
 }

@@ -12,18 +12,13 @@ class Register extends Controller
     //
 
     public function registerStatus(Request $request)
-    {
-
-        // return response()->json(['message' => 'Status Mahasiswa Berhasil Diubah', 'data' => $request->all()]);
-
-        
+    {        
         //change status mahasiwa where email  = email request body
         $user = auth()->user();
         $email  = $user->email;
         $status = $request->status;
         $mahasiswa = User::where('email', $email)->first();
         $mahasiswa->status = $status;
-        // return response()->json(['message' => 'Status Mahasiswa Berhasil Diubah', 'data' => $mahasiswa]);
         
         $mahasiswa->save();
 
@@ -31,8 +26,6 @@ class Register extends Controller
 
         return response()->json(['message' => 'Status Mahasiswa Berhasil Diubah', 'data' => $mahasiswa]);
 
-        
-        
     }
 
     public function statusMahasiswa()

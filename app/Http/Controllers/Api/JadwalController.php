@@ -11,36 +11,24 @@ use App\Models\Matakuliah;
 
 class JadwalController extends Controller
 {
-    
-
     public function getJadwalForMonth()
     {
 
         $user = auth()->user();
         $email = $user->email;
 
-        
-        // Get the current month and year
         $startOfMonth = Carbon::now()->startOfMonth();
         $endOfMonth = Carbon::now()->endOfMonth();
-
-        // Query to get all jadwal data within the current month
 
         $jadwals = Jadwal::join('irs_test', 'jadwal.id', '=', 'irs_test.kodejadwal')
             ->where('irs_test.email', $email)
             ->get();
-            
 
-
-        // Initialize an array to store the result
         $result = [];
 
-        // Iterate over each day of the month
         for ($date = $startOfMonth; $date <= $endOfMonth; $date->addDay()) {
             // Get the day of the week (1 for Monday, 2 for Tuesday, ..., 7 for Sunday)
             $dayOfWeek = $date->isoWeekday();
-
-            
 
             // Map the data for the day if it exists in the database
             if ($jadwals->where('hari', $dayOfWeek)->isNotEmpty()) {
@@ -82,7 +70,7 @@ class JadwalController extends Controller
                         'name' => Matakuliah::where('kodemk', $item->kodemk)->first()->nama,
                         'time' => $jamstart[$item->jammulai] . ' - ' . $jamend[$item->jamselesai],
                         'description' => $item->ruang,
-                        'label' => $item->status === 'conflict' ? 'red' : 'green', // Example logic for label
+                        'label' => $item->status === 'conflict' ? 'red' : 'green', 
                     ];
                 })->values();
 

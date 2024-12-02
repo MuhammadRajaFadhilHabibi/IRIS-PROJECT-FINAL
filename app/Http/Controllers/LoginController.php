@@ -1,13 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
-    
-
     public function index()
     {
         return view('login');
@@ -23,9 +19,6 @@ class LoginController extends Controller
         if (auth()->attempt($credentials)) {
             $request->session()->regenerate();
             session()->flash('login_success', true);
-
-            // dd($credentials);
-
             return redirect()->route('dashboard');
         }
 
