@@ -123,117 +123,151 @@
 
     {{-- datatable  --}}
     <script>
-        $(document).ready( function () {
-            var tableRuang = $('#Ruang').DataTable({
-                layout: {
-                    topStart: null,
-                    topEnd: null,
-                    bottomStart: 'pageLength',
-                    bottomEnd: 'paging'
-                },
-                responsive: true
-            });
-            $('#searchRuang').keyup(function() {
-                tableRuang.search($(this).val()).draw();
+$(document).ready(function () {
+    var tableRuang = $('#Ruang').DataTable({
+    pageLength: [10,25,50,100],
+    pageLength: -1,
+    layout: {
+        topStart: null,
+        topEnd: null,
+        bottomStart: 'pageLength',
+        bottomEnd: 'paging'
+    },
+    ordering:false,
+    "columnDefs": [
+        { className: "dt-head-center", "targets": [0,1,2,3,4,5,6,7] },
+        { className: "dt-body-center", "targets": [0,1,2,3,4,5,6,7] }
+    ]
+});
+
+    setTimeout(() => {
+        tableRuang.page.len(10).draw();
+    }, 10);
+
+    $('#searchRuang').keyup(function() {
+        tableRuang.search($(this).val()).draw();
+    });
+
+    // Reinisialisasi event handlers untuk modal
+    function initializeModalHandlers() {
+        $('[data-modal-toggle]').each(function() {
+            $(this).on('click', function() {
+                var targetModal = $(this).data('modal-target');
+                $('#' + targetModal).toggleClass('hidden flex');
             });
         });
+    }
 
-        function approveRuang(id) {
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Ruangan akan disetujui!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Setujui!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: `/ruang/${id}/update-status`,
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            status: 'Disetujui'
-                        },
-                        success: function (response) {
-                            $('#statusNow-' + id + ' span').text('Disetujui')
-                                .removeClass('bg-yellow-100 text-yellow-800')
-                                .addClass('bg-green-100 text-green-800');
-                            
-                            Swal.fire(
-                                'Disetujui!',
-                                'Ruangan berhasil disetujui.',
-                                'success'
-                            );
+    initializeModalHandlers();
+});
 
-                            const detailButton = `
-                                <button type="button" data-modal-target="detailModal-${id}" data-modal-toggle="detailModal-${id}" 
-                                    class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 shadow-lg px-3 py-2 text-xs font-medium rounded-lg">
-                                    Detail
-                                </button>`;
-                            $('#statusNow-' + id).siblings('td:last').html(detailButton);
-                        },
-                        error: function () {
-                            Swal.fire(
-                                'Gagal!',
-                                'Terjadi kesalahan saat menyetujui ruangan.',
-                                'error'
-                            );
-                        }
-                    });
+function approveRuang(id) {
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Ruangan akan disetujui!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Setujui!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/ruang/${id}/update-status`,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    status: 'Disetujui'
+                },
+                success: function (response) {
+                    // Update status display
+                    $('#statusNow-' + id + ' span').text('Disetujui')
+                        .removeClass('bg-yellow-100 text-yellow-800')
+                        .addClass('bg-green-100 text-green-800');
+                    
+                    // Update action buttons
+                    const detailButton = `
+                        <button type="button" data-modal-target="detailModal-${id}" data-modal-toggle="detailModal-${id}" 
+                                class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 shadow-lg px-3 py-2 text-xs font-medium rounded-lg">
+                            Detail
+                        </button>`;
+                    $('#statusNow-' + id).siblings('td:last').html(detailButton);
+
+                    // Reinitialize modal handlers
+                    initializeModalHandlers();
+                    
+                    Swal.fire(
+                        'Disetujui!',
+                        'Ruangan berhasil disetujui.',
+                        'success'
+                    );
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    Swal.fire(
+                        'Gagal!',
+                        'Terjadi kesalahan saat menyetujui ruangan.',
+                        'error'
+                    );
                 }
             });
         }
+    });
+}
 
-        function rejectRuang(id) {
-            Swal.fire({
-                title: 'Apakah Anda yakin?',
-                text: "Ruangan akan ditolak!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Tolak!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: `/ruang/${id}/update-status`,
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            status: 'Ditolak'
-                        },
-                        ordering false,
-                        success: function (response) {
-                            $('#statusNow-' + id + ' span').text('Ditolak')
-                                .removeClass('bg-yellow-100 text-yellow-800')
-                                .addClass('bg-red-100 text-red-800');
-                            
-                            Swal.fire(
-                                'Ditolak!',
-                                'Ruangan berhasil ditolak.',
-                                'success'
-                            );
+function rejectRuang(id) {
+    Swal.fire({
+        title: 'Apakah Anda yakin?',
+        text: "Ruangan akan ditolak!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Tolak!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: `/ruang/${id}/update-status`,
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    status: 'Ditolak'
+                },
+                success: function (response) {
+                    // Update status display
+                    $('#statusNow-' + id + ' span').text('Ditolak')
+                        .removeClass('bg-yellow-100 text-yellow-800')
+                        .addClass('bg-red-100 text-red-800');
+                    
+                    // Update action buttons
+                    const detailButton = `
+                        <button type="button" data-modal-target="detailModal-${id}" data-modal-toggle="detailModal-${id}" 
+                                class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 shadow-lg px-3 py-2 text-xs font-medium rounded-lg">
+                            Detail
+                        </button>`;
+                    $('#statusNow-' + id).siblings('td:last').html(detailButton);
 
-                            const detailButton = `
-                                <button type="button" data-modal-target="detailModal-${id}" data-modal-toggle="detailModal-${id}" 
-                                    class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 shadow-lg px-3 py-2 text-xs font-medium rounded-lg">
-                                    Detail
-                                </button>`;
-                            $('#statusNow-' + id).siblings('td:last').html(detailButton);
-                        },
-                        error: function () {
-                            Swal.fire(
-                                'Gagal!',
-                                'Terjadi kesalahan saat menolak ruangan.',
-                                'error'
-                            );
-                        }
-                    });
+                    // Reinitialize modal handlers
+                    initializeModalHandlers();
+                    
+                    Swal.fire(
+                        'Ditolak!',
+                        'Ruangan berhasil ditolak.',
+                        'success'
+                    );
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    Swal.fire(
+                        'Gagal!',
+                        'Terjadi kesalahan saat menolak ruangan.',
+                        'error'
+                    );
                 }
             });
         }
+    });
+}
     </script>
 
 @endsection

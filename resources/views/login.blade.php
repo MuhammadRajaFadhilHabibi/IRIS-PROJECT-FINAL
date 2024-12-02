@@ -1,6 +1,6 @@
 @extends('header')
 
-@section('title','Login')
+@section('title','Login IRIS')
 
 @section('page')
 <body class="min-h-screen w-full bg-white flex">

@@ -17,7 +17,18 @@
         <div class="px-8 py-8">
             <div class="bg-white border border-gray-200 rounded-3xl shadow-sm sm:p-6">
                 <div class="flex justify-between mb-4">
-                    <input id="searchRuang" type="text" placeholder="Cari Ruang" class="bg-gray-100 border border-black rounded-lg px-4 py-2 w-1/4">
+                    <div class="flex gap-4">
+                        <input id="searchRuang" type="text" placeholder="Cari Ruang" class="bg-gray-100 border border-black rounded-lg px-4 py-2">
+                        <select id="filterProdi" class="bg-gray-100 border border-black rounded-lg px-4 py-2">
+                            <option value="">Semua Prodi</option>
+                            <option value="Informatika">Informatika</option>
+                            <option value="Fisika">Fisika</option>
+                            <option value="Matematika">Matematika</option>
+                            <option value="Statistika">Statistika</option>
+                            <option value="Biologi">Biologi</option>
+                            <option value="Kimia">Kimia</option>
+                        </select>
+                    </div>
                     <button id="selectAll" data-modal-target="crud-modal" data-modal-toggle="crud-modal" 
                     class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br 
                            focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 
@@ -234,29 +245,42 @@
     
 {{-- DataTables Script --}}
 <script>
-    $(document).ready(function () {
-        // Inisialisasi DataTable
-        let tableRuang = $('#Ruang').DataTable({
-            pageLength: 10,
-            dom: '<"flex justify-between items-center mb-4"l>rt<"flex justify-between"ip>',
-            language: {
-                lengthMenu: "Tampilkan _MENU_ data per halaman",
-                search: "",
-            },
-            ordering: false,
-            columnDefs: [
-                { className: "dt-head-center", targets: '_all' },
-                { className: "dt-body-center", targets: '_all' }
-            ],
-        });
+    $(document).ready( function () {
+                    var tableRuang = $('#Ruang').DataTable({
+                        pageLength : [10,25,50,100],
+                        pageLength: -1, 
+                        layout :{
+                            topStart: null,
+                            topEnd: null,
+                            bottomStart: 'pageLength',
+                            bottomEnd: 'paging'
+                        },
+                        ordering: false,
+                        "columnDefs": [
+                            { className: "dt-head-center", "targets": [0,1,2,3,4,5,6] },
+                            { className: "dt-head-right", "targets": [7] },
+                            { className: "dt-body-center", "targets": [0,1,2,3,4,5,6] },
+                            {className: "dt-body-right", "targets": [7]}
+                        ],
+                    });
 
-        // Fungsi Pencarian
-        $('#searchRuang').on('keyup', function () {
-            tableRuang.search($(this).val()).draw();
-        });
+                    setTimeout(() => {
+                        tableRuang.page.len(10).draw();
+                    }, 10);
+
+                    $('#searchRuang').keyup(function() {
+                        tableRuang.search($(this).val()).draw();
+                    });
+
+                    // Fungsi Filter Prodi
+                    $('#filterProdi').on('change', function () {
+                    var selectedProdi = $(this).val();
+                    tableRuang.column(6).search(selectedProdi).draw(); // Kolom ke-6 adalah Prodi
+                 });
+
 
         // Submit Form Tambah Ruang
-$('#form-create-ruang').on('submit', function (e) {
+    $('#form-create-ruang').on('submit', function (e) {
     e.preventDefault();
     
     $.ajax({
