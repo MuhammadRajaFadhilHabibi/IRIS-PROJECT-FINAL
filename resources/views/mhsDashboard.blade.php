@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +9,17 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body class="bg-gray-50 font-sans">
 
     <div class="flex min-h-screen">
         {{-- Sidebar --}}
         <x-side-bar :active="request()->route()->getName()"></x-side-bar>
         {{-- End Sidebar --}}
-        
+
         <!-- Main Content with padding-left to compensate for sidebar width -->
-        <div class="flex-1 pl-[20%] p-10 space-y-8">
+        <div class="flex-1 pl-[240px] p-10 space-y-8">
+
             <!-- Header -->
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-4xl font-semibold text-gray-900">Dashboard</h1>
@@ -26,10 +29,12 @@
                         <span class="material-icons text-gray-600">account_circle</span>
                     </button>
                     <!-- Dropdown Menu -->
-                    <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-md py-2 z-20">
+                    <div id="dropdownMenu"
+                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-md py-2 z-20">
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <button type="submit"
+                                class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">
                                 Logout
                             </button>
                         </form>
@@ -38,16 +43,18 @@
             </div>
 
             <!-- User Information with max-width -->
-            <div class="bg-gradient-to-r from-blue-500 to-teal-400 p-6 rounded-lg flex items-center justify-between shadow-lg relative max-w-4xl mx-auto">
+            <div
+                class="bg-gradient-to-r from-blue-500 to-teal-400 p-6 rounded-lg flex items-center justify-between shadow-lg relative max-w-4xl mx-auto">
                 <div class="text-white">
                     <h2 class="text-3xl font-semibold mb-1">{{ $data['userName'] }}</h2>
                     <p class="text-sm">NIM: <span class="font-semibold">{{ $data['nim'] }}</span></p>
                     <p class="text-sm">Prodi: <span class="font-semibold">S1 {{ $data['prodi'] }}</span></p>
                 </div>
-                <div class="absolute right-6 -top-8 w-40 h-40 bg-black rounded-full border-4 border-gray-300 overflow-hidden">
+                <div
+                    class="absolute right-6 -top-8 w-40 h-40 bg-black rounded-full border-4 border-gray-300 overflow-hidden">
                     <img src="alip.jpg" alt="Profile Picture" class="w-full h-full object-cover">
                 </div>
-                
+
             </div>
 
             <!-- Academic Status and Performance Section -->
@@ -58,7 +65,8 @@
                         <span class="material-icons text-gray-600 mr-2">school</span>
                         Status Akademik
                     </h3>
-                    <p class="text-sm text-gray-700 mb-2">Dosen Wali: Dr. Robert Downey JR, S.T., M.Cs.<br><span class="text-xs">(NIP: 2031023012031)</span></p>
+                    <p class="text-sm text-gray-700 mb-2">Dosen Wali: Dr. Robert Downey JR, S.T., M.Cs.<br><span
+                            class="text-xs">(NIP: 2031023012031)</span></p>
                     <div class="flex justify-between mt-4">
                         <div class="text-center">
                             <p class="text-xs text-gray-500">Semester Akademik</p>
@@ -103,7 +111,7 @@
     </div>
 
     <script>
-        window.addEventListener('DOMContentLoaded', function() {
+        window.addEventListener('DOMContentLoaded', function () {
             const ctx = document.getElementById('ipkChart');
 
             if (!ctx) {
@@ -165,7 +173,7 @@
                                 size: 14
                             },
                             callbacks: {
-                                label: function(tooltipItem) {
+                                label: function (tooltipItem) {
                                     return 'IPK: ' + tooltipItem.raw;
                                 }
                             }
@@ -188,7 +196,7 @@
         }
 
         // Close dropdown if clicked outside
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const dropdownMenu = document.getElementById('dropdownMenu');
             const button = event.target.closest('button');
             if (!button || button.getAttribute('onclick') !== 'toggleDropdown()') {
@@ -197,4 +205,5 @@
         });
     </script>
 </body>
+
 </html>

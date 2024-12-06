@@ -43,16 +43,23 @@
             <!-- Tombol Buat IRS -->
 <!-- Tombol Buat IRS dan Download -->
 <div class="mt-6 flex space-x-4">
+    <!-- Tombol Buat Rencana Studi -->
     <a href="{{ route('mhsBuatIrs') }}">
         <button class="bg-red-500 text-white px-4 py-2 rounded">Buat Rencana Studi</button>
     </a>
-    <button class="download-irs-btn bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center">
+
+    <!-- Tombol Download IRS -->
+    <a 
+        href="{{ route('download.irs') }}" 
+        class="download-irs-btn bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center"
+    >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
         </svg>
         Download IRS
-    </button>
+    </a>
 </div>
+
             
 
             
