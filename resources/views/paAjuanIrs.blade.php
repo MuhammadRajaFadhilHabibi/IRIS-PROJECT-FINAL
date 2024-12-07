@@ -113,8 +113,7 @@
                         text: "IRS telah disetujui untuk " + nama,
                         icon: "success"
                       }).then(() => {
-                        location.reload();
-                      });
+                        location.reload();                      });
                     }
                   });
                 }
@@ -147,8 +146,7 @@
                         text: "IRS telah ditolak untuk " + nama,
                         icon: "error"
                       }).then(() => {
-                        location.reload();
-                      });
+                        location.reload();                      });
                     }
                   });
                 }

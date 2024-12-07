@@ -17,5 +17,10 @@ class Dosen extends Model
         'email',
         'no_telp',
     ];
+
+    public function mahasiswa()
+    {
+        return $this->hasMany(Mahasiswa::class, 'nip_doswal', 'nip');
+    }
     
 }

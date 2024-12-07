@@ -100,11 +100,11 @@
         <!-- PA Role Links -->
         @if($user->pa == 1)
         <li class="group">
-            <a href="{{ route('daftarmahasiswa') }}" class="flex items-center w-full text-gray-700 bg-white rounded-lg p-3 transition-all duration-300 hover:bg-gray-100 hover:transform hover:translate-x-1">
+            <a href="{{ route('perwalian') }}" class="flex items-center w-full text-gray-700 bg-white rounded-lg p-3 transition-all duration-300 hover:bg-gray-100 hover:transform hover:translate-x-1">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-gray-600 transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
                 </svg>
-                <span class="font-medium">Daftar Mahasiswa</span>
+                <span class="font-medium">Perwalian</span>
             </a>
         </li>
         <li class="group">
@@ -113,14 +113,6 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
                 <span class="font-medium">Ajuan IRS</span>
-            </a>
-        </li>
-        <li class="group">
-            <a href="{{ route('perwalian') }}" class="flex items-center w-full text-gray-700 bg-white rounded-lg p-3 transition-all duration-300 hover:bg-gray-100 hover:transform hover:translate-x-1">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 text-gray-600 transition-transform duration-300 group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                </svg>
-                <span class="font-medium">Perwalian</span>
             </a>
         </li>
         <!-- Mengubah button menjadi tag a -->
