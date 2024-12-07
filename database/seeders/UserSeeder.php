@@ -20,12 +20,13 @@ class UserSeeder extends Seeder
             ['name' => 'Indana Najwa Ramadhani', 'email' => 'indananajwagmail.com', 'password' => '12345', 'role' => 'Mahasiswa', 'prodi'=> 'Informatika', 'mhs'=>1, 'status' => 'Aktif'],
             ['name' => 'Muhammad Raja Fadhil Habibi', 'email' => 'rajafadhil@gmail.com', 'password' => '12345', 'role' => 'Mahasiswa', 'prodi'=> 'Informatika', 'mhs'=>1, 'status' => 'Aktif'],
             ['name' => 'Riski Akbar Firmansyah', 'email' => 'riskiakbar@gmail.com', 'password' => '12345', 'role' => 'Mahasiswa', 'prodi'=> 'Informatika', 'mhs'=>1, 'status' => 'Aktif'],
-            ['name' => 'indana', 'email' => 'indana@gmail.com', 'password' => '12345', 'role' => 'Pembimbing Akademik', 'prodi' => 'Informatika', 'pa'=>1],
+            ['name' => 'indana', 'email' => 'indana@gmail.com', 'password' => '12345', 'role' => 'Pembimbing Akademik', 'prodi' => 'Informatika', 'pa'=>1, 'nip' => '1234567890'],
             ['name' => 'Chandra Wijayakusuma', 'email' => 'chandra@gmail.com', 'password' => '12345', 'role' => 'Kaprodi', 'prodi' => 'Informatika', 'kp'=>1, 'dk'=>1],
             ['name' => 'Akbar', 'email' => 'akbar@gmail.com', 'password' => '12345', 'role' => 'Kaprodi', 'prodi' => 'Informatika', 'kp'=>1],
             ['name' => 'Riski Akbar ', 'email' => 'akbar1@gmail.com', 'password' => '12345', 'role' => 'Kaprodi', 'prodi' => 'Fisika', 'kp'=>1],
             ['name' => 'Raja', 'email' => 'raja@gmail.com', 'password' => '12345', 'role' => 'Dekan', 'prodi' => 'Informatika', 'dk'=>1],
             ['name' => 'Rusdi Ganteng', 'email' => 'rusdi@gmail.com', 'password' => '12345', 'role' => 'BA', 'prodi' => 'Informatika', 'ba'=>1],
+            ['name' => 'Rusdi', 'email' => 'rusditest@gmail.com', 'password' => '12345', 'role' => 'Mahasiswa', 'prodi'=> 'Informatika', 'mhs'=>1, 'status' => 'Aktif'],
         ];
 
         foreach ($user as $p) {

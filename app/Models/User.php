@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'nip',
     ];
 
     /**
@@ -45,5 +46,11 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function mahasiswa()
+    {
+        // Relasi dengan mahasiswa, berdasarkan 'nip_doswal' yang ada di mahasiswa
+        return $this->hasMany(Mahasiswa::class, 'nip_doswal', 'nip');
     }
 }

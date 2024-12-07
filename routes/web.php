@@ -23,6 +23,9 @@ use App\Http\Middleware\PembimbingAkademikMiddleware;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+use App\Http\Controllers\AjuanIRSController;
+use Barryvdh\DomPDF\Facade as PDF;
+
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -102,9 +105,15 @@ Route::middleware('auth')->group(function () {
         })->name('rombel');
 
         //Perwalian
-        Route::get('p/perwalian', function () {
-            return view('paPerwalian');
-        })->name('perwalian');
+        Route::get('/perwalian', [PembimbingController::class, 'perwalian'])->name('perwalian');
+        Route::get('/perwalian', [IrsController::class, 'getPerwalianData'])->name('perwalian');
+        // Route::get('/perwalian', [IrsController::class, 'showPerwalianPage'])->name('perwalian');
+
+        Route::post('/ajuan-irs/{id}/update-status', [AjuanIRSController::class, 'updateStatus'])->name('ajuan-irs.update-status');
+        Route::get('/view-mahasiswa/{nim}', [IrsController::class, 'showRecap'])->name('view-mahasiswa');
+  
+        Route::get('/download-irs', [IRSController::class, 'downloadIrsForDosen'])->name('download.irs');
+  
     });
 
     //Bagian Akademik

@@ -78,6 +78,22 @@ class MahasiswaSeeder extends Seeder
                 'alamat' => 'Jl. kos hijau',
                 'status' => 'Aktif',
             ],
+            [
+                'nim' => '2406012210000',
+                'nama' => 'Rusdi',
+                'email' => 'rusditest@gmail.com',
+                'no_telp' => '08080800',
+                'jenis_kelamin' => 'L',
+                'tanggal_lahir' => '2005-05-19',
+                'prodi' => 'Informatika',
+                'jalur_masuk' => 'MANDIRI',
+                'angkatan' => 2022,
+                'ipk' => 3.4,
+                'semester_berjalan' => 5,
+                'nip_doswal' => '1234567890',
+                'alamat' => 'Jl. kos hijau',
+                'status' => 'Aktif',
+            ],
         ]);
     }
 }
