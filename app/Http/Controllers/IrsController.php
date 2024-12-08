@@ -178,27 +178,6 @@ class IrsController extends Controller
         return view('paPerwalian', compact('mahasiswa'));
     }
 
-    // public function syncIrsStatus($email)
-    // {
-    //     // Hitung semua status dari irs_test
-    //     $statuses = Irstest::where('email', $email)
-    //         ->select('status')
-    //         ->get()
-    //         ->pluck('status')
-    //         ->unique();
-
-    //     $finalStatus = 'Pending'; // Default status jika tidak ada data
-
-    //     if ($statuses->contains('Ditolak')) {
-    //         $finalStatus = 'Ditolak'; // Prioritaskan jika ada yang ditolak
-    //     } elseif ($statuses->every(fn($status) => $status === 'Disetujui')) {
-    //         $finalStatus = 'Disetujui'; // Semua disetujui
-    //     }
-
-    //     // Update tabel mahasiswa
-    //     Mahasiswa::where('email', $email)->update(['status_irs' => $finalStatus]);
-    // }
-
     public function showRecap($nim)
     {
         // Ambil data mahasiswa berdasarkan NIM

@@ -1,18 +1,16 @@
+{{-- paAjuanPerubahan.blade.php --}}
 @extends('header')
 
-@section('title', 'Ajuan IRS')
+@section('title', 'Ajuan Perubahan IRS')  
 
 @section('page')
-
-
 <div class="flex pt-12 bg-white-50 min-h-screen">
     {{-- Sidebar --}}
     <x-side-bar :active="request()->route()->getName()"></x-side-bar>
     {{-- End Sidebar --}}
 
-    {{-- Main Content --}}
-    <div id="main-content" class="relative text-gray-900 font-poppins w-full h-full pl-[20%] pt-10">
-        <div class="px-10">
+    {{-- Main Content --}}   
+    <div id="main-content" class="flex-1 p-8 bg-gray-200 min-h-screen ml-[300px]">
             <h1 class="text-transparent bg-clip-text bg-gradient-to-b from-blue-500 to-blue-300 font-bold text-3xl mb-4">
                 Ajuan Perubahan IRS Mahasiswa
             </h1>

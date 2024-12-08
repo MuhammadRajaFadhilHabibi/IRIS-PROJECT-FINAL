@@ -4,9 +4,7 @@
 @section('title', 'Perwalian')  
 
 @section('page')
-    <x-side-bar></x-side-bar>
-<body>
-    <div class="flex pt-12 overflow-hidden">
+<div class="flex pt-12 bg-white-50 min-h-screen">
         {{-- Sidebar --}}
         <x-side-bar :active="request()->route()->getName()"></x-side-bar>
         {{-- End Sidebar --}}
