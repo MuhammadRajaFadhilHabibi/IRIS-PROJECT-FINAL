@@ -5,7 +5,7 @@ use Monolog\Registry;
 use App\Http\Middleware\RegistFirst;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IrsController;
-use App\Http\Controllers\KhsController;
+// use App\Http\Controllers\KhsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RuangController;
 use App\Http\Controllers\JadwalController;
@@ -63,8 +63,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/irs/{id}/{email}', [IrsController::class, 'index']);
 
         // KHS Routes
-        Route::get('/khs', [KhsController::class, 'all'])->name('khs');
-        Route::get('/khs/{id}', [KhsController::class, 'index']);
+        // Route::get('/khs', [KhsController::class, 'all'])->name('khs');
+        // Route::get('/khs/{id}', [KhsController::class, 'index']);
 
         // Transkrip Routes
         Route::get('m/transkrip', function () {

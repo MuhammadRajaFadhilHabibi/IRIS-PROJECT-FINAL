@@ -1,16 +1,16 @@
+{{-- paDashboard.blade.php --}}
 @extends('header')
 
-@section('title', 'Dashboard Pembimbing Akademik')
+@section('title', 'Dashboard')  
 
 @section('page')
+<div class="flex-h-screen bg-white">
+        {{-- Sidebar --}}
+        <x-side-bar :active="request()->route()->getName()"></x-side-bar>
+        {{-- End Sidebar --}}
 
-<div class="flex h-screen">
-    {{-- Sidebar --}}
-    <x-side-bar :active="request()->route()->getName()"></x-side-bar>
-    {{-- End Sidebar --}}
-
-    {{-- Main Content --}}
-    <div id="main-content" class="flex-1 p-8 bg-white min-h-screen ml-[340px]">
+        {{-- Main Content --}}   
+    <div id="main-content" class="flex-1 p-8 min-h-screen ml-[340px]">
         <div class="flex flex-col items-start space-y-8">
             <!-- Header Daftar Mahasiswa -->
             <h1 class="text-3xl font-bold text-[#264A5D] mb-8">Dashboard Pembimbing Akademik</h1>

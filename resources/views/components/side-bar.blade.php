@@ -95,7 +95,7 @@
                 <span class="font-medium">Akademik</span>
             </a>
         </li>
-    @endif
+        @endif
     
         <!-- PA Role Links -->
         @if($user->pa == 1)
@@ -124,7 +124,7 @@
                 <span class="font-medium">Ajuan Perubahan IRS</span>
             </a>
         </li>
-    @endif      
+        @endif      
     </ul>
 </aside>
 
